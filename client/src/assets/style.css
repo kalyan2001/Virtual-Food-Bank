@@ -1,0 +1,128 @@
+/* ===== Custom Theme Overrides ===== */
+body {
+  background-color: #f9fafb;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* App header color */
+h1, h2 {
+  color: #2563eb;
+}
+
+/* Customize buttons */
+.btn-primary {
+  background-color: #2563eb;
+  border: none;
+}
+.btn-primary:hover {
+  background-color: #1e4ed8;
+}
+
+/* Custom form box shadow */
+form {
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hero {
+  position: relative;
+  color: white;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.hero .container {
+  position: relative;
+  z-index: 2;
+}
+
+.card {
+  border: none;
+  border-radius: 12px;
+}
+
+.step {
+  background: #f8f9fa;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.step:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== Auth Pages (Login / Register) ===== */
+.auth-section {
+  min-height: 85vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+}
+
+.auth-card {
+  background: #fff;
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  width: 100%;
+  max-width: 520px;
+}
+
+.auth-title {
+  color: #2563eb;
+  font-weight: 700;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.auth-input {
+  border-radius: 8px !important;
+}
+
+.auth-btn {
+  background-color: #2563eb;
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  padding: 10px;
+  font-weight: 600;
+}
+
+.auth-btn:hover {
+  background-color: #1d4ed8;
+}
+
+.auth-footer {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.auth-footer a {
+  color: #2563eb;
+  text-decoration: none;
+}
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+.navbar img {
+  border: 2px solid #2563eb;
+  padding: 2px;
+  background: white;
+}
+
+.navbar .btn {
+  font-size: 14px;
+}
