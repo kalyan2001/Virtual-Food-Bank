@@ -116,3 +116,13 @@ form {
 .auth-footer a:hover {
   text-decoration: underline;
 }
+
+.navbar img {
+  border: 2px solid #2563eb;
+  padding: 2px;
+  background: white;
+}
+
+.navbar .btn {
+  font-size: 14px;
+}

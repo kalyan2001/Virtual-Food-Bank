@@ -14,14 +14,42 @@ function Register() {
     phone: "",
     role: "donor",
   });
+  const [errors, setErrors] = useState({});
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
+
+  // 🔍 Validation function
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!/^[A-Za-z ]{3,}$/.test(form.name.trim()))
+      newErrors.name = "Name must be at least 3 letters long.";
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+      newErrors.email = "Invalid email address.";
+
+    if (
+      !/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+        form.password
+      )
+    )
+      newErrors.password =
+        "Password must be at least 8 characters, include an uppercase letter, number, and special character.";
+
+    if (!/^\d{10}$/.test(form.phone))
+      newErrors.phone = "Phone number must be 10 digits.";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!validateForm()) return;
+
     try {
-      // 1️⃣ Create user in Firebase Authentication
+      // 1️⃣ Create user in Firebase
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         form.email,
@@ -29,7 +57,7 @@ function Register() {
       );
       const user = userCredential.user;
 
-      // 2️⃣ Save extra details to MongoDB via backend
+      // 2️⃣ Save details to backend (MongoDB)
       const res = await fetch("http://localhost:5000/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -43,20 +71,9 @@ function Register() {
       });
 
       if (res.ok) {
-        // ✅ Show success toast
-        setToastMessage("Registration successful! Redirecting to login...");
+        setToastMessage("🎉 Registration successful! Redirecting to login...");
         setShowToast(true);
-
-        // ✅ Reset form fields
-        setForm({
-          name: "",
-          email: "",
-          password: "",
-          phone: "",
-          role: "donor",
-        });
-
-        // ✅ Redirect to Login after 2 seconds
+        setForm({ name: "", email: "", password: "", phone: "", role: "donor" });
         setTimeout(() => {
           setShowToast(false);
           navigate("/login");
@@ -79,19 +96,18 @@ function Register() {
         <div className="auth-card">
           <h3 className="auth-title">Create Your ShareBite Account</h3>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} noValidate>
             <div className="mb-3">
               <label className="form-label">Full Name</label>
               <input
                 type="text"
                 className="form-control auth-input"
                 placeholder="Enter your full name"
-                required
                 value={form.name}
-                onChange={(e) =>
-                  setForm({ ...form, name: e.target.value })
-                }
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                required
               />
+              {errors.name && <small className="text-danger">{errors.name}</small>}
             </div>
 
             <div className="mb-3">
@@ -100,12 +116,11 @@ function Register() {
                 type="email"
                 className="form-control auth-input"
                 placeholder="Enter your email"
-                required
                 value={form.email}
-                onChange={(e) =>
-                  setForm({ ...form, email: e.target.value })
-                }
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                required
               />
+              {errors.email && <small className="text-danger">{errors.email}</small>}
             </div>
 
             <div className="mb-3">
@@ -114,12 +129,13 @@ function Register() {
                 type="password"
                 className="form-control auth-input"
                 placeholder="Create a password"
-                required
                 value={form.password}
-                onChange={(e) =>
-                  setForm({ ...form, password: e.target.value })
-                }
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                required
               />
+              {errors.password && (
+                <small className="text-danger">{errors.password}</small>
+              )}
             </div>
 
             <div className="mb-3">
@@ -128,12 +144,11 @@ function Register() {
                 type="tel"
                 className="form-control auth-input"
                 placeholder="Enter your phone number"
-                required
                 value={form.phone}
-                onChange={(e) =>
-                  setForm({ ...form, phone: e.target.value })
-                }
+                onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                required
               />
+              {errors.phone && <small className="text-danger">{errors.phone}</small>}
             </div>
 
             <div className="mb-3">
@@ -141,9 +156,7 @@ function Register() {
               <select
                 className="form-select auth-input"
                 value={form.role}
-                onChange={(e) =>
-                  setForm({ ...form, role: e.target.value })
-                }
+                onChange={(e) => setForm({ ...form, role: e.target.value })}
               >
                 <option value="donor">Donor</option>
                 <option value="recipient">Recipient</option>
@@ -166,7 +179,6 @@ function Register() {
           </div>
         </div>
 
-        {/* ===== Bootstrap Toast (Success/Error Message) ===== */}
         {showToast && (
           <div
             className="toast-container position-fixed bottom-0 end-0 p-3"
