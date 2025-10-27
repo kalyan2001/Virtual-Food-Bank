@@ -3,6 +3,10 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+<<<<<<< Updated upstream
+=======
+import { getStorage } from "firebase/storage";
+>>>>>>> Stashed changes
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -24,4 +28,8 @@ const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+<<<<<<< Updated upstream
+=======
+export const storage = getStorage(app);
+>>>>>>> Stashed changes
 export { auth, db };

@@ -116,3 +116,48 @@ form {
 .auth-footer a:hover {
   text-decoration: underline;
 }
+<<<<<<< Updated upstream
+=======
+
+.navbar img {
+  border: 2px solid #2563eb;
+  padding: 2px;
+  background: white;
+}
+
+.navbar .btn {
+  font-size: 14px;
+}
+
+/* --- Donor Dashboard Card Styling --- */
+.card {
+  transition: all 0.25s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card-img-top {
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.card-body h5 {
+  font-weight: 600;
+}
+
+.badge {
+  font-size: 0.85rem;
+  padding: 0.5em 0.8em;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-danger:hover {
+  transform: scale(1.05);
+  transition: 0.2s ease-in-out;
+}
+>>>>>>> Stashed changes
