@@ -2,22 +2,85 @@ import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
-<<<<<<< Updated upstream
-=======
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
->>>>>>> Stashed changes
 
 function Login() {
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
-<<<<<<< Updated upstream
 
   const handleSubmit = (e) => {
     e.preventDefault();
     alert(`Logging in as ${form.email}`);
     // Later: connect to backend login API
-=======
+  };
+
+  return (
+    <>
+      <Navbar />
+      <section className="auth-section">
+        <div className="auth-card">
+          <h3 className="auth-title">Login to ShareBite</h3>
+
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label className="form-label">Email</label>
+              <input
+                type="email"
+                className="form-control auth-input"
+                placeholder="Enter your email"
+                required
+                value={form.email}
+                onChange={(e) =>
+                  setForm({ ...form, email: e.target.value })
+                }
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Password</label>
+              <input
+                type="password"
+                className="form-control auth-input"
+                placeholder="Enter your password"
+                required
+                value={form.password}
+                onChange={(e) =>
+                  setForm({ ...form, password: e.target.value })
+                }
+              />
+            </div>
+
+            <button type="submit" className="btn auth-btn">
+              Login
+            </button>
+          </form>
+
+          <div className="auth-footer">
+            <p>
+              New user?{" "}
+              <a href="#" onClick={() => navigate("/register")}>
+                Create an account
+              </a>
+            </p>
+          </div>
+        </div>
+      </section>
+      <Footer />
+    </>
+  );
+}
+
+export default Login;
+
+import React, { useState } from "react";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import { useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
+
+function Login() {
+  const navigate = useNavigate();
+  const [form, setForm] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
@@ -76,7 +139,6 @@ function Login() {
       setToastMessage("❌ Error: " + err.message);
       setShowToast(true);
     }
->>>>>>> Stashed changes
   };
 
   return (
@@ -86,31 +148,18 @@ function Login() {
         <div className="auth-card">
           <h3 className="auth-title">Login to ShareBite</h3>
 
-<<<<<<< Updated upstream
-          <form onSubmit={handleSubmit}>
-=======
           <form onSubmit={handleSubmit} noValidate>
->>>>>>> Stashed changes
             <div className="mb-3">
               <label className="form-label">Email</label>
               <input
                 type="email"
                 className="form-control auth-input"
                 placeholder="Enter your email"
-<<<<<<< Updated upstream
-                required
-                value={form.email}
-                onChange={(e) =>
-                  setForm({ ...form, email: e.target.value })
-                }
-              />
-=======
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 required
               />
               {errors.email && <small className="text-danger">{errors.email}</small>}
->>>>>>> Stashed changes
             </div>
 
             <div className="mb-3">
@@ -119,17 +168,6 @@ function Login() {
                 type="password"
                 className="form-control auth-input"
                 placeholder="Enter your password"
-<<<<<<< Updated upstream
-                required
-                value={form.password}
-                onChange={(e) =>
-                  setForm({ ...form, password: e.target.value })
-                }
-              />
-            </div>
-
-            <button type="submit" className="btn auth-btn">
-=======
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 required
@@ -140,18 +178,12 @@ function Login() {
             </div>
 
             <button type="submit" className="btn auth-btn w-100">
->>>>>>> Stashed changes
               Login
             </button>
           </form>
 
           <div className="auth-footer">
             <p>
-<<<<<<< Updated upstream
-              New user?{" "}
-              <a href="#" onClick={() => navigate("/register")}>
-                Create an account
-=======
               Don’t have an account?{" "}
               <a href="#" onClick={() => navigate("/register")}>
                 Register here
@@ -161,13 +193,10 @@ function Login() {
               Forgot password?{" "}
               <a href="#" onClick={() => alert("Password reset coming soon!")}>
                 Reset now
->>>>>>> Stashed changes
               </a>
             </p>
           </div>
         </div>
-<<<<<<< Updated upstream
-=======
 
         {showToast && (
           <div
@@ -189,7 +218,6 @@ function Login() {
             </div>
           </div>
         )}
->>>>>>> Stashed changes
       </section>
       <Footer />
     </>
@@ -197,3 +225,4 @@ function Login() {
 }
 
 export default Login;
+
