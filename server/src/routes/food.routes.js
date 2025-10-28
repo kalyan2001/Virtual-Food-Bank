@@ -122,4 +122,20 @@ router.put("/:id", async (req, res) => {
 });
 
 
+
+
+// 👀 Get all available food items (for recipients)
+router.get("/available", async (req, res) => {
+  try {
+    const foods = await FoodItem.find({ status: "available" }).sort({ createdAt: -1 });
+    res.status(200).json(foods);
+  } catch (err) {
+    console.error("❌ Fetch available foods error:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
+
+
+
+
 export default router;
