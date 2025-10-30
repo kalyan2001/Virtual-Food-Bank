@@ -9,7 +9,12 @@ function DonorDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedFood, setSelectedFood] = useState(null);
-  const [form, setForm] = useState({ name: "", quantity: "", expiryDate: "", description: "" });
+  const [form, setForm] = useState({
+    name: "",
+    quantity: "",
+    expiryDate: "",
+    description: "",
+  });
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -22,7 +27,9 @@ function DonorDashboard() {
 
     const fetchFoods = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/food/donor/${donorId}`);
+        const res = await fetch(
+          `http://localhost:5000/api/food/donor/${donorId}`
+        );
         const data = await res.json();
         setFoods(data);
       } catch (err) {
@@ -34,23 +41,25 @@ function DonorDashboard() {
     fetchFoods();
   }, [navigate]);
 
-  // 🗑️ Delete Item
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this item?")) return;
-    try {
-      const res = await fetch(`http://localhost:5000/api/food/${id}`, { method: "DELETE" });
-      if (res.ok) {
-        setFoods(foods.filter((f) => f._id !== id));
-        alert("Item deleted successfully!");
-      } else {
-        alert("Error deleting item");
-      }
-    } catch (err) {
-      alert("Error: " + err.message);
-    }
-  };
+  // Delete Item
+  // const handleDelete = async (id) => {
+  //   if (!window.confirm("Are you sure you want to delete this item?")) return;
+  //   try {
+  //     const res = await fetch(`http://localhost:5000/api/food/${id}`, {
+  //       method: "DELETE",
+  //     });
+  //     if (res.ok) {
+  //       setFoods(foods.filter((f) => f._id !== id));
+  //       alert("Item deleted successfully!");
+  //     } else {
+  //       alert("Error deleting item");
+  //     }
+  //   } catch (err) {
+  //     alert("Error: " + err.message);
+  //   }
+  // };
 
-  // ✏️ Open Edit Modal
+  // Open Edit Modal
   const handleEditClick = (food) => {
     setSelectedFood(food);
     setForm({
@@ -61,14 +70,17 @@ function DonorDashboard() {
     });
   };
 
-  // ✏️ Save Edit
+  // Save Edit
   const handleUpdate = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/food/${selectedFood._id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+      const res = await fetch(
+        `http://localhost:5000/api/food/${selectedFood._id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        }
+      );
 
       if (res.ok) {
         const updated = await res.json();
@@ -89,14 +101,16 @@ function DonorDashboard() {
     <>
       <Navbar />
       <section className="container py-5">
-        {/* <h2 className="text-center text-primary mb-4">📦 My Food Donations</h2> */}
-        <h2 className="text-center mb-4" style={{ fontWeight: 700, color: "#0d6efd" }}>
-  📦 My Food Donations
-</h2>
-<p className="text-center text-muted mb-5">
-  Manage your shared meals — edit, update, or remove donations anytime.
-</p>
-
+        
+        <h2
+          className="text-center mb-4"
+          style={{ fontWeight: 700, color: "#0d6efd" }}
+        >
+          📦 My Food Donations
+        </h2>
+        <p className="text-center text-muted mb-5">
+          Manage your shared meals — edit, update, or remove donations anytime.
+        </p>
 
         {loading && <p className="text-center">Loading your donations...</p>}
         {error && <p className="text-danger text-center">{error}</p>}
@@ -129,29 +143,26 @@ function DonorDashboard() {
                     <br />
                   </p>
 
-                  {/* 🎨 Status Badge with Expiry Check */}
-{(() => {
-  const today = new Date();
-  const expiry = new Date(food.expiryDate);
-  const isExpired = expiry < today;
+                  {/* Status Badge with Expiry Check */}
+                  {(() => {
+                    const today = new Date();
+                    const expiry = new Date(food.expiryDate);
+                    const isExpired = expiry < today;
 
-  return (
-    <span
-      className={`badge ${
-        isExpired
-          ? "bg-danger"
-          : food.status === "available"
-          ? "bg-success"
-          : "bg-secondary"
-      }`}
-    >
-      {isExpired ? "Expired" : "Available"}
-    </span>
-  );
-})()}
-
-
-
+                    return (
+                      <span
+                        className={`badge ${
+                          isExpired
+                            ? "bg-danger"
+                            : food.status === "available"
+                            ? "bg-success"
+                            : "bg-secondary"
+                        }`}
+                      >
+                        {isExpired ? "Expired" : "Available"}
+                      </span>
+                    );
+                  })()}
                 </div>
 
                 <div className="card-footer bg-transparent border-0 d-flex justify-content-between">
@@ -159,14 +170,14 @@ function DonorDashboard() {
                     className="btn btn-outline-primary btn-sm"
                     onClick={() => handleEditClick(food)}
                   >
-                    ✏️ Edit
+                    Edit
                   </button>
-                  <button
+                  {/* <button
                     className="btn btn-outline-danger btn-sm"
                     onClick={() => handleDelete(food._id)}
                   >
-                    🗑️ Delete
-                  </button>
+                    Delete
+                  </button> */}
                 </div>
               </div>
             </div>
@@ -174,7 +185,7 @@ function DonorDashboard() {
         </div>
       </section>
 
-      {/* 🧱 Edit Modal */}
+      {/* Edit Modal */}
       {selectedFood && (
         <div
           className="modal show fade d-block"
@@ -197,9 +208,7 @@ function DonorDashboard() {
                     type="text"
                     className="form-control"
                     value={form.name}
-                    onChange={(e) =>
-                      setForm({ ...form, name: e.target.value })
-                    }
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
                   />
                 </div>
 

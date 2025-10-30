@@ -1,82 +1,68 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { storage } from "../firebase";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { useNavigate } from "react-router-dom";
 
 function AddFood() {
+  const navigate = useNavigate();
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const donorId = storedUser?.uid || storedUser?._id;
+
   const [form, setForm] = useState({
     name: "",
     description: "",
     category: "",
     quantity: "",
     expiryDate: "",
-    pickupAddress: "",
-    imageFile: null,
+    street: "",
+    city: "",
+    postalCode: "",
+    province: "",
+    image: null,
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [toast, setToast] = useState({ show: false, message: "", success: true });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-  };
-
-  const handleFileChange = (e) => {
-    setForm({ ...form, imageFile: e.target.files[0] });
-  };
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!form.imageFile) {
-    setToast({ show: true, message: "Please upload an image.", success: false });
-    return;
-  }
+    e.preventDefault();
+    if (!form.image) {
+      alert("Please upload an image.");
+      return;
+    }
 
-  try {
-    setIsSubmitting(true);
+    // ✅ Combine full address
+    const fullAddress = `${form.street}, ${form.city}, ${form.postalCode}, ${form.province}`;
 
-    // Use FormData to send image + other fields
-    const user = JSON.parse(localStorage.getItem("user"));
     const formData = new FormData();
-
-    formData.append("donorId", user.uid);
+    formData.append("donorId", donorId);
     formData.append("name", form.name);
     formData.append("description", form.description);
     formData.append("category", form.category);
     formData.append("quantity", form.quantity);
     formData.append("expiryDate", form.expiryDate);
-    formData.append("pickupAddress", form.pickupAddress);
-    formData.append("image", form.imageFile);
+    formData.append("pickupAddress", fullAddress);
+    formData.append("image", form.image);
 
-    const res = await fetch("http://localhost:5000/api/food/add", {
-      method: "POST",
-      body: formData, // no headers needed; browser handles multipart
-    });
-
-    if (res.ok) {
-      setToast({ show: true, message: "✅ Food added successfully!", success: true });
-      setForm({
-        name: "",
-        description: "",
-        category: "",
-        quantity: "",
-        expiryDate: "",
-        pickupAddress: "",
-        imageFile: null,
+    setLoading(true);
+    try {
+      const res = await fetch("http://localhost:5000/api/food/add", {
+        method: "POST",
+        body: formData,
       });
-    } else {
-      const data = await res.json();
-      setToast({ show: true, message: "❌ " + data.message, success: false });
-    }
-  } catch (err) {
-    setToast({ show: true, message: "❌ Error: " + err.message, success: false });
-  } finally {
-    setIsSubmitting(false);
-  }
-};
 
+      const data = await res.json();
+      if (res.ok) {
+        alert("✅ Food added successfully!");
+        navigate("/donor-dashboard");
+      } else {
+        alert(`Error: ${data.message}`);
+      }
+    } catch (err) {
+      alert("❌ Error adding food: " + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -84,15 +70,14 @@ function AddFood() {
       <section className="container py-5">
         <h2 className="text-center text-primary mb-4">🍱 Add Food Donation</h2>
 
-        <form className="mx-auto" style={{ maxWidth: "600px" }} onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label className="form-label">Food Name</label>
             <input
               type="text"
               className="form-control"
-              name="name"
               value={form.name}
-              onChange={handleChange}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
               required
             />
           </div>
@@ -101,10 +86,10 @@ function AddFood() {
             <label className="form-label">Description</label>
             <textarea
               className="form-control"
-              name="description"
-              value={form.description}
-              onChange={handleChange}
               rows="3"
+              value={form.description}
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
+              required
             ></textarea>
           </div>
 
@@ -113,9 +98,8 @@ function AddFood() {
             <input
               type="text"
               className="form-control"
-              name="category"
               value={form.category}
-              onChange={handleChange}
+              onChange={(e) => setForm({ ...form, category: e.target.value })}
               required
             />
           </div>
@@ -125,9 +109,8 @@ function AddFood() {
             <input
               type="number"
               className="form-control"
-              name="quantity"
               value={form.quantity}
-              onChange={handleChange}
+              onChange={(e) => setForm({ ...form, quantity: e.target.value })}
               required
             />
           </div>
@@ -137,22 +120,58 @@ function AddFood() {
             <input
               type="date"
               className="form-control"
-              name="expiryDate"
               value={form.expiryDate}
-              onChange={handleChange}
+              onChange={(e) => setForm({ ...form, expiryDate: e.target.value })}
               required
             />
           </div>
 
-          <div className="mb-3">
-            <label className="form-label">Pickup Address</label>
-            <textarea
-              className="form-control"
-              name="pickupAddress"
-              value={form.pickupAddress}
-              onChange={handleChange}
-              rows="2"
-            ></textarea>
+          {/* 🏠 Structured Address Fields */}
+          <div className="row">
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Street Address</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="e.g. 220 Evens Pond Crescent"
+                value={form.street}
+                onChange={(e) => setForm({ ...form, street: e.target.value })}
+                required
+              />
+            </div>
+            <div className="col-md-4 mb-3">
+              <label className="form-label">City</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="e.g. Kitchener"
+                value={form.city}
+                onChange={(e) => setForm({ ...form, city: e.target.value })}
+                required
+              />
+            </div>
+            <div className="col-md-2 mb-3">
+              <label className="form-label">Postal Code</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="e.g. N2E 4C1"
+                value={form.postalCode}
+                onChange={(e) => setForm({ ...form, postalCode: e.target.value })}
+                required
+              />
+            </div>
+            <div className="col-md-12 mb-3">
+              <label className="form-label">Province</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="e.g. ON"
+                value={form.province}
+                onChange={(e) => setForm({ ...form, province: e.target.value })}
+                required
+              />
+            </div>
           </div>
 
           <div className="mb-3">
@@ -161,38 +180,19 @@ function AddFood() {
               type="file"
               className="form-control"
               accept="image/*"
-              onChange={handleFileChange}
+              onChange={(e) => setForm({ ...form, image: e.target.files[0] })}
               required
             />
           </div>
 
-          <button type="submit" className="btn btn-primary w-100" disabled={isSubmitting}>
-            {isSubmitting ? "Uploading..." : "Submit Donation"}
+          <button
+            type="submit"
+            className="btn btn-primary w-100"
+            disabled={loading}
+          >
+            {loading ? "Uploading..." : "Add Food Donation"}
           </button>
         </form>
-
-        {toast.show && (
-          <div
-            className="toast-container position-fixed bottom-0 end-0 p-3"
-            style={{ zIndex: 1055 }}
-          >
-            <div
-              className={`toast align-items-center text-bg-${
-                toast.success ? "primary" : "danger"
-              } show`}
-              role="alert"
-            >
-              <div className="d-flex">
-                <div className="toast-body">{toast.message}</div>
-                <button
-                  type="button"
-                  className="btn-close btn-close-white me-2 m-auto"
-                  onClick={() => setToast({ ...toast, show: false })}
-                ></button>
-              </div>
-            </div>
-          </div>
-        )}
       </section>
       <Footer />
     </>
