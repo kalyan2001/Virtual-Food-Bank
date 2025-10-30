@@ -93,6 +93,43 @@ function Navbar() {
               </>
             ) : (
               <>
+
+
+              
+                {user.role === "donor" && (
+  <li className="nav-item">
+    <button
+      className="btn btn-outline-success mx-2"
+      onClick={() => navigate("/donor-dashboard")}
+    >
+      🏠 Donor Dashboard
+    </button>
+  </li>
+)}
+
+{user.role === "recipient" && (
+  <li className="nav-item">
+    <button
+      className="btn btn-outline-success mx-2"
+      onClick={() => navigate("/recipient-dashboard")}
+    >
+      🥗 Recipient Dashboard
+    </button>
+  </li>
+)}
+
+{user.role === "admin" && (
+  <li className="nav-item">
+    <button
+      className="btn btn-outline-success mx-2"
+      onClick={() => navigate("/admin-dashboard")}
+    >
+      ⚙️ Admin Dashboard
+    </button>
+  </li>
+)}
+
+
                 <li className="nav-item d-flex align-items-center mx-2">
                   <img
                     src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
@@ -105,6 +142,19 @@ function Navbar() {
                     {user.name || "User"}
                   </span>
                 </li>
+
+                {user.role === "donor" && (
+                  <li className="nav-item">
+                    <button
+                      className="btn btn-outline-primary mx-2"
+                      onClick={() => navigate("/add-food")}
+                    >
+                    ➕ Add Food
+                    </button>
+                  </li>
+                )}
+
+
                 <li className="nav-item">
                   <button
                     className="btn btn-outline-danger mx-2"
