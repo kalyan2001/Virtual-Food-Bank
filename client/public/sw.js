@@ -7,5 +7,9 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-  // Offline caching can be added later
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request).catch(() => caches.match("/offline.html"));
+    })
+  );
 });

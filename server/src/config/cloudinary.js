@@ -1,4 +1,3 @@
-// cloudinary.js
 import { v2 as cloudinary } from "cloudinary";
 import dotenv from "dotenv";
 
@@ -6,7 +5,7 @@ dotenv.config();
 
 const configureCloudinary = () => {
   try {
-    // Method 1: Try individual env vars first
+    // 1: Try individual env vars first
     if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
       cloudinary.config({
         cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -18,7 +17,7 @@ const configureCloudinary = () => {
       return true;
     }
     
-    // Method 2: Try parsing CLOUDINARY_URL
+    // 2: Try parsing CLOUDINARY_URL
     if (process.env.CLOUDINARY_URL) {
       const url = process.env.CLOUDINARY_URL;
       const matches = url.match(/cloudinary:\/\/([^:]+):([^@]+)@(.+)/);

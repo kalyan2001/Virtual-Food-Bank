@@ -10,12 +10,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@paypal/react-paypal-js": "^8.9.2",
     "@popperjs/core": "^2.11.8",
+    "axios": "^1.13.2",
     "bootstrap": "^5.3.8",
     "firebase": "^12.4.0",
+    "jspdf": "^3.0.3",
+    "jspdf-autotable": "^5.0.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-router-dom": "^7.9.4"
+    "react-router-dom": "^7.9.4",
+    "react-toastify": "^11.0.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",

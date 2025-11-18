@@ -61,9 +61,9 @@ function Home() {
             <div className="col-md-4 mb-4">
               <div className="card h-100 shadow-sm">
                 <div className="card-body">
-                  <h5 className="card-title text-primary">📊 Track Donations</h5>
+                  <h5 className="card-title text-primary">📍 Geo Verified Pickups</h5>
                   <p className="card-text">
-                    Keep a record of your donations and requests, all in one place.
+                    Each pickup is verified using location data to ensure pickup accuracy and trust.
                   </p>
                 </div>
               </div>
@@ -92,7 +92,7 @@ function Home() {
             <div className="col-md-3 mb-4">
               <div className="step p-3">
                 <h1 className="text-primary">3️⃣</h1>
-                <p>Coordinate pickup and delivery easily.</p>
+                <p>Coordinate pickup easily using maps and geolocation.</p>
               </div>
             </div>
             <div className="col-md-3 mb-4">
