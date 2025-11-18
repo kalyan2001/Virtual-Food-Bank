@@ -7,7 +7,7 @@ function AdminDashboard() {
     <>
       <Navbar />
       <section className="container py-5 text-center">
-        <h2 className="text-primary">⚙️ Admin Dashboard</h2>
+        <h2 className="text-primary">Admin Dashboard</h2>
         <p className="text-muted">
           This is a placeholder for the admin panel. Features will be added later.
         </p>

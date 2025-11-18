@@ -1,4 +1,3 @@
-/* ===== Custom Theme Overrides ===== */
 body {
   background-color: #f9fafb;
   font-family: 'Segoe UI', sans-serif;
@@ -157,4 +156,20 @@ form {
 .btn-outline-danger:hover {
   transform: scale(1.05);
   transition: 0.2s ease-in-out;
+}
+
+/* --- Recipient Dashboard Filter Bar Styling --- */
+.card.shadow-sm.border-0.p-3.mb-4 {
+  background-color: #f9f9fc;
+  border-radius: 12px;
+}
+
+.form-label i {
+  font-size: 1.1rem;
+  vertical-align: middle;
+}
+
+.btn-outline-secondary.btn-sm i {
+  font-size: 1rem;
+  vertical-align: middle;
 }

@@ -18,7 +18,7 @@ function Register() {
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
 
-  // 🔍 Validation function
+  // Validation function
   const validateForm = () => {
     const newErrors = {};
 
@@ -49,7 +49,7 @@ function Register() {
     if (!validateForm()) return;
 
     try {
-      // 1️⃣ Create user in Firebase
+      // Create user in Firebase
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         form.email,
@@ -57,7 +57,7 @@ function Register() {
       );
       const user = userCredential.user;
 
-      // 2️⃣ Save details to backend (MongoDB)
+      // Save details to backend (MongoDB)
       const res = await fetch("http://localhost:5000/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
