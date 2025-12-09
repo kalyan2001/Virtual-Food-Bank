@@ -18,7 +18,6 @@ function Register() {
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
 
-  // 🔍 Validation function
   const validateForm = () => {
     const newErrors = {};
 
@@ -34,7 +33,7 @@ function Register() {
       )
     )
       newErrors.password =
-        "Password must be at least 8 characters, include an uppercase letter, number, and special character.";
+        "Password must be at least 8 characters, include uppercase, number, and special character.";
 
     if (!/^\d{10}$/.test(form.phone))
       newErrors.phone = "Phone number must be 10 digits.";
@@ -49,7 +48,6 @@ function Register() {
     if (!validateForm()) return;
 
     try {
-      // 1️⃣ Create user in Firebase
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         form.email,
@@ -57,7 +55,6 @@ function Register() {
       );
       const user = userCredential.user;
 
-      // 2️⃣ Save details to backend (MongoDB)
       const res = await fetch("http://localhost:5000/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -71,9 +68,10 @@ function Register() {
       });
 
       if (res.ok) {
-        setToastMessage("🎉 Registration successful! Redirecting to login...");
+        setToastMessage("🎉 Registration successful! Redirecting...");
         setShowToast(true);
         setForm({ name: "", email: "", password: "", phone: "", role: "donor" });
+
         setTimeout(() => {
           setShowToast(false);
           navigate("/login");
@@ -92,14 +90,25 @@ function Register() {
   return (
     <>
       <Navbar />
+
       <section className="auth-section">
         <div className="auth-card">
-          <h3 className="auth-title">Create Your ShareBite Account</h3>
+
+          {/* FIXED: First-Level Heading Required by WAVE */}
+          <h1 className="auth-title text-center mb-4">
+            Create Your ShareBite Account
+          </h1>
 
           <form onSubmit={handleSubmit} noValidate>
+
+            {/* NAME */}
             <div className="mb-3">
-              <label className="form-label">Full Name</label>
+              <label htmlFor="fullName" className="form-label">
+                Full Name
+              </label>
               <input
+                id="fullName"
+                name="fullName"
                 type="text"
                 className="form-control auth-input"
                 placeholder="Enter your full name"
@@ -110,9 +119,14 @@ function Register() {
               {errors.name && <small className="text-danger">{errors.name}</small>}
             </div>
 
+            {/* EMAIL */}
             <div className="mb-3">
-              <label className="form-label">Email</label>
+              <label htmlFor="email" className="form-label">
+                Email
+              </label>
               <input
+                id="email"
+                name="email"
                 type="email"
                 className="form-control auth-input"
                 placeholder="Enter your email"
@@ -123,9 +137,14 @@ function Register() {
               {errors.email && <small className="text-danger">{errors.email}</small>}
             </div>
 
+            {/* PASSWORD */}
             <div className="mb-3">
-              <label className="form-label">Password</label>
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
               <input
+                id="password"
+                name="password"
                 type="password"
                 className="form-control auth-input"
                 placeholder="Create a password"
@@ -138,9 +157,14 @@ function Register() {
               )}
             </div>
 
+            {/* PHONE */}
             <div className="mb-3">
-              <label className="form-label">Phone</label>
+              <label htmlFor="phone" className="form-label">
+                Phone
+              </label>
               <input
+                id="phone"
+                name="phone"
                 type="tel"
                 className="form-control auth-input"
                 placeholder="Enter your phone number"
@@ -151,12 +175,19 @@ function Register() {
               {errors.phone && <small className="text-danger">{errors.phone}</small>}
             </div>
 
+            {/* ROLE */}
             <div className="mb-3">
-              <label className="form-label">Select Role</label>
+              <label htmlFor="role" className="form-label">
+                Select Role
+              </label>
               <select
+                id="role"
+                name="role"
                 className="form-select auth-input"
                 value={form.role}
                 onChange={(e) => setForm({ ...form, role: e.target.value })}
+                required
+                aria-required="true"
               >
                 <option value="donor">Donor</option>
                 <option value="recipient">Recipient</option>
@@ -164,7 +195,17 @@ function Register() {
               </select>
             </div>
 
-            <button type="submit" className="btn auth-btn w-100">
+            {/* BUTTON WITH PROPER CONTRAST */}
+            <button
+              type="submit"
+              className="btn auth-btn w-100"
+              style={{
+                backgroundColor: "#0050d8",
+                color: "white",
+                fontWeight: "600",
+              }}
+              aria-label="Register"
+            >
               Register
             </button>
           </form>
@@ -172,9 +213,13 @@ function Register() {
           <div className="auth-footer">
             <p>
               Already have an account?{" "}
-              <a href="#" onClick={() => navigate("/login")}>
+              <button
+                type="button"
+                className="btn btn-link p-0"
+                onClick={() => navigate("/login")}
+              >
                 Login here
-              </a>
+              </button>
             </p>
           </div>
         </div>
@@ -187,12 +232,14 @@ function Register() {
             <div
               className="toast align-items-center text-bg-primary show"
               role="alert"
+              aria-live="polite"
             >
               <div className="d-flex">
                 <div className="toast-body">{toastMessage}</div>
                 <button
                   type="button"
                   className="btn-close btn-close-white me-2 m-auto"
+                  aria-label="Close notification"
                   onClick={() => setShowToast(false)}
                 ></button>
               </div>
@@ -200,6 +247,7 @@ function Register() {
           </div>
         )}
       </section>
+
       <Footer />
     </>
   );

@@ -71,40 +71,73 @@ function Login() {
   return (
     <>
       <Navbar />
+
       <section className="auth-section">
         <div className="auth-card">
-          <h3 className="auth-title">Login to ShareBite</h3>
+
+         
+          <h1 className="auth-title text-center mb-4">Login to ShareBite</h1>
 
           <form onSubmit={handleSubmit} noValidate>
+            {/* EMAIL FIELD */}
             <div className="mb-3">
-              <label className="form-label">Email</label>
+              <label htmlFor="email" className="form-label">
+                Email
+              </label>
+
               <input
+                id="email"
+                name="email"
                 type="email"
                 className="form-control auth-input"
                 placeholder="Enter your email"
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 required
+                aria-required="true"
               />
-              {errors.email && <small className="text-danger">{errors.email}</small>}
+
+              {errors.email && (
+                <small className="text-danger">{errors.email}</small>
+              )}
             </div>
 
+            {/* PASSWORD FIELD */}
             <div className="mb-3">
-              <label className="form-label">Password</label>
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
+
               <input
+                id="password"
+                name="password"
                 type="password"
                 className="form-control auth-input"
                 placeholder="Enter your password"
                 value={form.password}
-                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                onChange={(e) =>
+                  setForm({ ...form, password: e.target.value })
+                }
                 required
+                aria-required="true"
               />
+
               {errors.password && (
                 <small className="text-danger">{errors.password}</small>
               )}
             </div>
 
-            <button type="submit" className="btn auth-btn w-100">
+          
+            <button
+              type="submit"
+              className="btn auth-btn w-100"
+              style={{
+                backgroundColor: "#0050d8",
+                color: "white",
+                fontWeight: "600",
+              }}
+              aria-label="Login"
+            >
               Login
             </button>
           </form>
@@ -112,15 +145,24 @@ function Login() {
           <div className="auth-footer">
             <p>
               Don’t have an account?{" "}
-              <a href="#" onClick={() => navigate("/register")}>
+              <button
+                type="button"
+                className="btn btn-link p-0"
+                onClick={() => navigate("/register")}
+              >
                 Register here
-              </a>
+              </button>
             </p>
+
             <p>
               Forgot password?{" "}
-              <a href="#" onClick={() => alert("Password reset coming soon!")}>
+              <button
+                type="button"
+                className="btn btn-link p-0"
+                onClick={() => alert("Password reset coming soon!")}
+              >
                 Reset now
-              </a>
+              </button>
             </p>
           </div>
         </div>
@@ -133,6 +175,7 @@ function Login() {
             <div
               className="toast align-items-center text-bg-primary show"
               role="alert"
+              aria-live="polite"
             >
               <div className="d-flex">
                 <div className="toast-body">{toastMessage}</div>
@@ -140,12 +183,14 @@ function Login() {
                   type="button"
                   className="btn-close btn-close-white me-2 m-auto"
                   onClick={() => setShowToast(false)}
+                  aria-label="Close notification"
                 ></button>
               </div>
             </div>
           </div>
         )}
       </section>
+
       <Footer />
     </>
   );

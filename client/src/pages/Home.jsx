@@ -18,7 +18,7 @@ function Home() {
           height: "85vh",
         }}
       >
-        <div className="container">
+        <div className="container hero-overlay">
           <h1 className="display-4 fw-bold mb-3">
             Share Food, Spread Smiles
           </h1>
@@ -39,7 +39,7 @@ function Home() {
             <div className="col-md-4 mb-4">
               <div className="card h-100 shadow-sm">
                 <div className="card-body">
-                  <h5 className="card-title text-primary">🍱 Donate Food</h5>
+                  <h3 className="card-title text-primary">🍱 Donate Food</h3>
                   <p className="card-text">
                     Have extra food? Share it with people in need safely and quickly.
                   </p>
@@ -50,7 +50,7 @@ function Home() {
             <div className="col-md-4 mb-4">
               <div className="card h-100 shadow-sm">
                 <div className="card-body">
-                  <h5 className="card-title text-primary">🤝 Request Help</h5>
+                  <h3 className="card-title text-primary">🤝 Request Help</h3>
                   <p className="card-text">
                     Are you a recipient organization or individual? Request donations nearby.
                   </p>
@@ -61,9 +61,9 @@ function Home() {
             <div className="col-md-4 mb-4">
               <div className="card h-100 shadow-sm">
                 <div className="card-body">
-                  <h5 className="card-title text-primary">📊 Track Donations</h5>
+                  <h3 className="card-title text-primary">📍 Geo Verified Pickups</h3>
                   <p className="card-text">
-                    Keep a record of your donations and requests, all in one place.
+                    Each pickup is verified using location data to ensure pickup accuracy and trust.
                   </p>
                 </div>
               </div>
@@ -92,7 +92,7 @@ function Home() {
             <div className="col-md-3 mb-4">
               <div className="step p-3">
                 <h1 className="text-primary">3️⃣</h1>
-                <p>Coordinate pickup and delivery easily.</p>
+                <p>Coordinate pickup easily using maps and geolocation.</p>
               </div>
             </div>
             <div className="col-md-3 mb-4">
